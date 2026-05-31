@@ -129,10 +129,10 @@ function padLabel(s, n) {
   const where = info
     ? `${fg} ${info.country || cc}${info.city ? ' · ' + info.city : ''}`
     : '查询失败';
-  let net = info
-    ? `${info.as ? info.as.replace(/^AS/, 'AS') + ' ' : ''}${info.asname || info.isp || ''}`.trim() || '—'
-    : '—';
-  if (net.length > 30) net = net.slice(0, 29).trimEnd() + '…';
+  // ip-api 的 as 字段已含「ASxxxx 机构名」, 不要再拼 asname(那是注册局 handle, 冗余)
+  let net = info ? (info.as || info.isp || '—').trim() : '—';
+  net = net.replace(/^(AS\d+)\s+/, '$1 · '); // AS25820 IT7 Networks → AS25820 · IT7 Networks
+  if (net.length > 34) net = net.slice(0, 33).trimEnd() + '…';
   const [tIcon, tText] = ipType(info);
   const [rIcon, rText, rLevel] = ipRisk(info);
 
