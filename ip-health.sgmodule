@@ -1,0 +1,9 @@
+#!name = 出口体检 (IP纯净度 + 解锁)
+#!desc = 当前出口的 IP 归属 / ASN / 住宅判定 / 风险纯净度 + Netflix·Max·ChatGPT·Claude 解锁。点击面板刷新。三端通用 (macOS / iOS / tvOS)。
+#!category = 面板
+
+[Panel]
+IPHealth = script-name=IPHealth, update-interval=600
+
+[Script]
+IPHealth = type=generic, script-path=https://raw.githubusercontent.com/GitZhangChi/surge-panel/main/ip-health.js, timeout=20
