@@ -131,8 +131,13 @@ function padLabel(s, n) {
     : '查询失败';
   // ip-api 的 as 字段已含「ASxxxx 机构名」, 不要再拼 asname(那是注册局 handle, 冗余)
   let net = info ? (info.as || info.isp || '—').trim() : '—';
-  net = net.replace(/^(AS\d+)\s+/, '$1 · '); // AS25820 IT7 Networks → AS25820 · IT7 Networks
-  if (net.length > 34) net = net.slice(0, 33).trimEnd() + '…';
+  // 去掉公司法律后缀(Corporation/Inc/LLC…), 对判断没用且占地方
+  net = net.replace(
+    /[,\s]+(Corporation|Corp|Incorporated|Inc|L\.?L\.?C|Ltd|Limited|Co|Company|GmbH|Holdings?|Group)\.?$/gi,
+    ''
+  );
+  net = net.replace(/^(AS\d+)\s+/, '$1 · '); // AS21743 Atlas Networks → AS21743 · Atlas Networks
+  if (net.length > 26) net = net.slice(0, 25).trimEnd() + '…';
   const [tIcon, tText] = ipType(info);
   const [rIcon, rText, rLevel] = ipRisk(info);
 
